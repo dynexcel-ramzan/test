@@ -1,0 +1,13 @@
+<odoo>
+  <data>
+        <report
+            id="attendance_report_pdf_action"
+            string="Daily Attendance Report(PDF)"
+            model="report.de_hr_attendance_report_pdf.attendance_report_pdf"
+            report_type="qweb-pdf"
+            file="de_hr_attendance_report_pdf.attendance_report_pdf"
+            name="de_hr_attendance_report_pdf.attendance_report_pdf"
+        />
+
+  </data>
+</odoo>

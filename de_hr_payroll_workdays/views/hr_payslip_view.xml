@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Show Attendance Date field on list view-->
+        <record id="inherit_hr_attendance_view_tree" model="ir.ui.view">
+            <field name="name">inherit.hr.attendance.view.tree</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='check_in']" position="before">
+                    <field name="attendance_date"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="inherit_view_hr_payslip_form" model="ir.ui.view">
+            <field name="name">inherit.view.hr.payslip.form</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="num_of_days"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

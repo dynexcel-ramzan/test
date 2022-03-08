@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_report_card" model="ir.actions.report">
+        <field name="name">Product Report</field>
+        <field name="model">product.template</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">de_products_report.product_report_template</field>
+    </record>
+<!--    <report id="product_report_card"-->
+<!--            string="Product Report"-->
+<!--            model="product.template"-->
+<!--            report_type="qweb-pdf"-->
+<!--            name="de_products_report.product_report_template"-->
+<!--            file="de_products_report.product_report_template"-->
+<!--             />-->
+    
+</odoo>

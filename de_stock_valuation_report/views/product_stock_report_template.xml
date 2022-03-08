@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<template id="de_stock_valuation_pdf_report">
+		<t t-call="web.html_container">
+			<t t-call="web.external_layout">
+				<div class="page">
+					<div class="oe_structure" />
+					<div class="text-left">
+						<h3 class="text-center">Product Stock </h3>
+						<!--<span t-esc="data['product_id']"/> -->
+						<t
+							t-foreach="request.env['product.product'].search([('id', '=', data['product_id'])])"
+							t-as="prd">
+							<h4>
+								<span t-field="prd.product_tmpl_id.name" />
+							</h4>
+						</t>
+						<p>
+							Valuation Date:
+							<span t-esc="data['dated']" t-options="{'widget': 'date'}" />
+						</p>
+					</div>
+				</div>
+
+				<table class="table table-condensed" name="stock_expiry_table">
+					<thead>
+						<tr>
+							<th>Category</th>
+							<th>Product</th>
+							<th>barcode</th>
+							<th>Quantity</th>
+							<th>Price</th>
+							<th>Original Price</th>
+							<th>Valuation</th>
+						</tr>
+					</thead>
+					<tbody>
+						<t t-set="tot" t-value="0" />
+
+						<tr t-foreach="dat" t-as="d"
+							style="border-bottom:1px solid #000;">
+							<t t-set="saleprice"
+								t-value="get_saleprice(d['categ_id'], d['product_tmpl_id'], d['product_id'], data['pricelist_id'], d['list_price'])" />
+							<t t-set="sale_value" t-value="saleprice * d['quantity']" />
+							<t t-set="tot" t-value="tot + sale_value" />
+							<td>
+								<span t-esc="d['category_name']" />
+							</td>
+							<td>
+								<t
+									t-foreach="request.env['product.product'].search([('id', '=', d['product_id'])],limit=1)"
+									t-as="product">
+									<span t-field="product.display_name" />
+								</t>
+								<!-- <span t-esc="d['product_name']"/> -->
+							</td>
+							<td>
+								<span t-esc="d['barcode']" />
+							</td>
+
+							<td>
+								<span t-esc="d['quantity']" />
+							</td>
+							<td>
+								<span t-esc="saleprice" />
+							</td>
+							<td>
+								<span t-esc="d['list_price']" />
+							</td>
+							<td>
+								<span t-esc="sale_value" />
+							</td>
+
+
+							<!-- <td><t t-esc="'{0:,.2f}'.format(int(d['salesprice']))" /></td> -->
+						</tr>
+						<tr>
+							<td colspan="4">Total Value</td>
+							<td>
+								<t t-esc="'{0:,.2f}'.format(int(tot))" />
+							</td>
+
+						</tr>
+
+					</tbody>
+				</table>
+			</t>
+		</t>
+	</template>
+
+</odoo>

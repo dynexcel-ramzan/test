@@ -1,0 +1,45 @@
+<odoo>
+  <data>
+           <!--Display form view of wizard-->
+        <record id="view_attendance_report_wizard" model="ir.ui.view">
+            <field name="name">view.attendance.report.wizard</field>
+            <field name="model">attendance.report.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button name="check_report"
+                            string="Print PDF"
+                            type="object"
+                            class="oe_highlight"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!--Open the wizard on click of menu-->
+        <record id="attendance_report_pdf_action" model="ir.actions.act_window">
+            <field name="name">Daily Attendance Report</field>
+            <field name="res_model">attendance.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_attendance_report_wizard"/>
+        </record>
+
+      <menuitem
+              action="attendance_report_pdf_action"
+              id="daily_attendance_report_menu"
+              name="Daily Attendance Report(PDF)"
+              parent="hr_attendance.menu_hr_attendance_manage_attendances"
+              sequence="21"
+      />
+
+
+  </data>
+</odoo>

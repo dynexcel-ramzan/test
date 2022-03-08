@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="pos_slip_report_template">
+        <t t-call="web.html_container">
+            <div class="page" style="page-break-inside: avoid;">
+                <t t-foreach="docs" t-as='doc'>
+                    <div class="pos-receipt" style="column-gap:10px; font-family:Inconsolata; font-size:21px">
+                        <div style="margin-top: 1px;" align="center">
+                            <t t-if="company.logo">
+                                <img t-att-src="image_data_uri(company.logo)"/>
+                            </t>
+                            <t t-else="">
+                                (Company Logo)
+                            </t>
+                        </div>
+                        <div class="centered">
+                            <center>
+                                <b>
+                                    STN #
+                                    <t t-esc="1234567890112"/>
+                                    <br/>
+                                    NTN #
+                                    <t t-esc="1234567"/>
+                                    <br/>
+                                    <br/>
+                                    <t t-esc="doc.pos_reference"/>
+                                </b>
+                            </center>
+                        </div>
+                        <div class="centered">
+                            <center>
+                                <b>
+                                    <p style="border-style: solid;">Order Receipt</p>
+                                </b>
+                            </center>
+                        </div>
+                        <strong style="float:left;">Invoice #</strong>
+                        <div style="float:right;">
+                            <t t-esc="doc.pos_reference"/>
+<!--                            <t t-if="doc.invoice_number">-->
+<!--                                <t t-esc="doc.invoice_number"/>-->
+<!--                            </t>-->
+<!--                            <t t-else="">-</t>-->
+                        </div>
+                        <br/>
+                        <br/>
+                        <strong style="float:left;">Operator Name #</strong>
+                        <div style="float:right;"><t t-esc="user.name"/></div>
+                        <br/>
+                        <br/>
+                        <strong style="float:left;">Inv Date #</strong>
+                        <div style="float:right;"><t t-esc="doc.date_order"/></div>
+                        <br/>
+                        <br/>
+                        <strong style="float:left;">Counter #</strong>
+                        <div style="float:right;">
+                            <t t-esc="doc.session_id.config_id.name"/>
+<!--                            <t t-if="config">-->
+<!--                                <t t-esc="config.name"/>-->
+<!--                            </t>-->
+<!--                            <t t-else="">-</t>-->
+                        </div>
+                        <br/>
+                        <br/>
+                        <strong style="float:left;">Cashier #</strong>
+                        <div style="float:right;">
+                            <t t-if="user">
+                                <t t-esc="doc.user_id.name"/>
+                            </t>
+                            <t t-else="">-</t>
+                        </div>
+                        <br/>
+                        <br/>
+                        <t t-set="gst" t-value="0"/>
+                        <table class='class="table table-bordered"'>
+                            <colgroup>
+                                <col width='40%'/>
+                                <col width='30%'/>
+                                <col width='40%'/>
+                                <col width='40%'/>
+                                <col width='20%'/>
+                            </colgroup>
+                            <colgroup>
+                                <col width='50%'/>
+                                <col width='15%'/>
+                                <col width='15%'/>
+                                <col width='20%'/>
+                                <col width='20%'/>
+                            </colgroup>
+                            <tr style="outline: thin solid; font-size:20px">
+                                <td>
+                                    <strong>Item</strong>
+                                </td>
+                                <td>
+                                    <strong>Price</strong>
+                                </td>
+                                <td>
+                                    <strong>Qty</strong>
+                                </td>
+                                <td>
+                                    <strong>Disc</strong>
+                                </td>
+                                <td>
+                                    <strong>Amount</strong>
+                                </td>
+                            </tr>
+                            <t t-set="totl_qty" t-value="0"/>
+                            <t t-set="total_items" t-value="0"/>
+                            <t t-set="total_discount" t-value="0"/>
+                            <tr t-foreach="doc.lines" t-as="line" style="font-size:20px;">
+<!--                                <tr>-->
+<!--                                    <td>-->
+<!--                                        <t t-esc="line.product_id.default_code"/>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+                                <td>
+                                    <t t-esc="line.product_id.name"/>
+                                </td>
+                                <td>
+                                    <t t-esc="line.price_unit"/>
+                                </td>
+                                <td>
+                                    <t t-esc="line.qty"/>
+                                </td>
+                                <td>
+                                    <t t-esc="line.discount"/>
+                                    <t t-set="total_discount" t-value="total_discount + line.discount"/>
+                                </td>
+                                <t t-set="totl_qty" t-value="totl_qty + line.qty"/>
+                                <td>
+                                    <t t-esc="round(line.price_subtotal)"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <hr style="width: 100%;height: 0px;"/>
+                        <strong style="float:right;">Total Qty: <t t-esc="totl_qty"/></strong>
+                        <br/>
+                        <br/>
+                        <strong style="float:left;">Exclusive of G.S.T : </strong>
+                        <div style="float:right;"><t t-esc="doc.amount_tax"/></div>
+                        <br/>
+                        <br/>
+                        <strong style="float:left;">G.S.T : </strong>
+                        <div style="float:right;">
+                            <t t-foreach="doc.lines" t-as="line">
+                                <tr t-foreach='line.tax_ids_after_fiscal_position' t-as='tax'>
+<!--                                    <t t-set="gst" t-value="gst + tax.amount"/>-->
+<!--                                    <td><t t-esc='tax.name'/></td>-->
+<!--                                    <td class="pos-right-align"><t t-esc='tax.amount'/></td>-->
+                                </tr>
+                            </t>
+                            <t t-esc='gst'/>
+<!--                            <t t-esc='doc.amount_tax'/>-->
+                        </div>
+                        <br/>
+                        <br/>
+                        <strong style="float:left;">Gross Inclusive of G.S.T : </strong>
+                        <div style="float:right;"><t t-esc='doc.amount_paid'/></div>
+                        <br/>
+                        <br/>
+                        <strong style="float:left;">On Item Discount: </strong>
+                        <div style="float:right;"><t t-esc='total_discount'/></div>
+                        <br/>
+                        <br/>
+                        <strong style="float:left;">Net Amount:</strong>
+                        <div style="float:right;"><t t-esc='doc.amount_paid'/></div>
+                        <br/>
+<!--                        <div class="centered">-->
+<!--                            <center>-->
+<!--                                <b>-->
+<!--                                    <p style="border-style: solid;">Payment Details</p>-->
+<!--                                </b>-->
+<!--                            </center>-->
+<!--                        </div>-->
+<!--                        <table class='class="table table-bordered"'>-->
+<!--                            <colgroup>-->
+<!--                                <col width='25%'/>-->
+<!--                                <col width='15%'/>-->
+<!--                                <col width='15%'/>-->
+<!--                            </colgroup>-->
+<!--                            <tr style="outline: thin solid">-->
+<!--                                <th>Mode</th>-->
+<!--                                <th>Amount</th>-->
+<!--                            </tr>-->
+<!--                        </table>-->
+                        <div class="centered">
+                            <center>
+                                <b>
+                                    <p style="border-style: solid;">You Saved : <t t-esc='total_discount' class="pos-receipt-right-align"/></p>
+                                </b>
+                            </center>
+                        </div>
+                        <br/>
+                        <div style='text-align:left'>
+                            <span>Thanks for shopping with us!</span>
+                            <br/>
+                            <span><b>Terms &amp; Conditions:</b></span>
+                            <br/>
+                            <span>- GST included where applicable.</span>
+                            <br/>
+                            <span>- No return or exchange without original receipt.</span>
+                            <br/>
+                            <span>- Return or exchange is possible within 7 days of Sale. </span>
+                            <br/>
+                            <span>- Make sure the product you are returning or exchanging is in original condition and intact with all tags. </span>
+                            <br/>
+                            <span>- Sale Products/Items cannot be returned or exchanged.</span>
+                            <br/>
+                            <span>- Company reserves the right of changing terms and conditions without prior notice.</span>
+                            <br/>
+                            <span>- In case of any query feel free to contact us at:</span>
+                            <br/>
+<!--                            <t t-esc="company.phone"/>-->
+<!--                            <br/>-->
+<!--                            <t t-esc="company.website"/>-->
+<!--                            <br/>-->
+<!--                            <t t-esc="company.social_facebook"/>-->
+<!--                            <br/>-->
+<!--                            <t t-esc="company.social_instagram"/>-->
+                        </div>
+                        <hr style="width: 100%;border-top:1px dotted #000;"/>
+                        <div class="pos-center-align">
+                            <center>
+                                Software Developed By:<strong>Dynexcel</strong><br/>
+                                Phone:<strong>+923331616393</strong><br/>
+                                www.dynexcel.com
+                            </center>
+                        </div>
+                        <br/>
+                        <t t-if="doc.name">
+                            <t t-set="order_ref" t-value="doc.name"/>
+                            <div class="receipt-qr" style="text-align:center;">
+                                <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', doc.name, 600, 100)"/>
+                            </div>
+                        </t>
+<!--                        <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', doc.name, 600, 100)"-->
+<!--                             style="width:300px;height:40px;"/>-->
+<!--                        <table>-->
+<!--                            <tr>-->
+<!--                                <td>-->
+<!--                                    <strong>Exclusive of G.S.T :</strong>-->
+<!--                                </td>-->
+<!--                                <td class="pos-right-align" style="float:right;">-->
+<!--                                    <t t-esc="doc.amount_untaxed"/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td>-->
+<!--                                    <strong>G.S.T : </strong>-->
+<!--                                </td>-->
+<!--                                <td class="pos-right-align" style="float:right; margin-right: 1px; text-align: right;">-->
+<!--                                    <t t-esc='17'/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td>-->
+<!--                                    <strong>Gross Inclusive of G.S.T : </strong>-->
+<!--                                </td>-->
+<!--                                <td class="pos-right-align" style="float:right; margin-right: 1px; text-align: right;">-->
+<!--                                    <t t-esc='17'/>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                        </table>-->
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>
