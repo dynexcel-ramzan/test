@@ -1,0 +1,36 @@
+<!--<odoo>-->
+<!--       <template id="employee_attendance_report_layout">-->
+<!--           <t t-set="company" t-value="user.company_id"/>-->
+<!--           <div class="header">-->
+<!--            <div class="row" style="color:blue">-->
+<!--                <div class="col-1">-->
+<!--                <i>-->
+<!--                    <i style="border-bottom: 1px solid black;" class="col-2 mb4">-->
+<!--                       <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 40px;" alt="logo"/>-->
+<!--                    </i>-->
+<!--                     </i>-->
+<!--                </div>-->
+<!--                    <div class="col-7">-->
+<!--                    <i style="font-weight: bold;" t-field="company.partner_id"-->
+<!--                         t-options='{"widget": "contact", "fields":["address","name"],"no_marker": true }'-->
+<!--                    />-->
+
+<!--                </div>-->
+<!--                <div class="col-4" style="color:blue">-->
+<!--              <i class='pull-right'>-->
+
+<!--                       <i>-->
+<!--                        Print on: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%m-%d-%Y- %H:%M')"/>-->
+<!--                      </i>-->
+
+<!--                 </i>-->
+<!--                </div>-->
+<!--               </div>-->
+
+<!--        <div t-if="company.logo or company.report_header" class="row zero_min_height">-->
+
+<!--           </div>-->
+<!--       </div>-->
+
+<!--    </template>-->
+<!--</odoo>-->

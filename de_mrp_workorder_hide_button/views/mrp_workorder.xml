@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Add commission in invoice list view-->
+        <record id="mrp_workorder_view_form_tablet_inherit" model="ir.ui.view">
+            <field name="name">mrp.workorder.view.form.tablet.inherit</field>
+            <field name="model">mrp.workorder</field>
+            <field name="inherit_id" ref="mrp_workorder.mrp_workorder_view_form_tablet"/>
+            <field name="arch" type="xml">
+                <button name="action_open_manufacturing_order" type="object" string="Mark as Done and Close MO" icon="fa-check" class="btn-primary" barcode_trigger="cloMO" invisible="1"/>
+            </field>
+        </record>
+    </data>
+</odoo>

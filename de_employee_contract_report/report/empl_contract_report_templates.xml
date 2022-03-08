@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_employee_contract_document">
+        <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="web.external_layout">
+              <div class="page">
+                    <div class="row">
+                        <div class="col-xs-8" style="margin-top:10px;">
+                            <div style="border-bottom:1px solid black;">
+                                <strong style="text-decoration:underline; font-size:16px;">Company Name:</strong>
+                            <span t-field="doc.company_id"/>
+                            </div>
+                            <br/>
+                            <div style="text-align:center;">
+                                <strong style="text-decoration:underline; font-size:18px;">EMPLOYEE'S PERSONAL PROFILE </strong> 
+                            </div>
+                            
+                        </div>
+                        <div class="col-xs-3">
+                            <span t-field="doc.employee_id.image" t-field-options='{"widget": "image", "style":"width: 150px;height: 150px"}'/>
+                        </div>
+                        
+                    </div>
+                    <table style="width:86.5%; margin-top:10px;">
+                        <tr style="border:1px solid black;">
+                            <td style="text-decoration:underline; width:30%; border-right:1px solid black; padding:5px;"><strong>Contract Name:</strong></td>
+                            <td style="width:0%; padding:5px;"><span t-field="doc.name"/></td>
+                        </tr>
+                        <tr style="border:1px solid black;">
+                            <td style="text-decoration:underline; width:30%; border-right:1px solid black; padding:5px;"><strong>Father's Name:</strong></td>
+                            <td style="width:50%; padding:5px;"><span t-field="doc.employee_id.father_name"/></td>
+                        </tr>
+                        <tr style="border:1px solid black;">
+                            <td style="text-decoration:underline; width:30%; border-right:1px solid black; padding:5px;"><strong>Department:</strong></td>
+                            <td style="width:50%; padding:5px;"><span t-field="doc.employee_id.department_id"/></td>
+                        </tr>
+                        <tr style="border:1px solid black;">
+                            <td style="text-decoration:underline; width:30%; border-right:1px solid black; padding:5px;"><strong>Acdamic Qualification:</strong></td>
+                            <td style="width:50%; padding:5px;"><span t-field="doc.employee_id.qualification"/></td>
+                        </tr>
+                        <tr style="border:1px solid black;">
+                            <td style="text-decoration:underline; width:30%; border-right:1px solid black; padding:5px;"><strong>Date Of Birth:</strong></td>
+                            <td style="width:50%; padding:5px;"><span t-field="doc.employee_id.birthday"/></td>
+                        </tr>
+                        <tr style="border:1px solid black;">
+                            <td style="text-decoration:underline; width:30%; border-right:1px solid black; padding:5px;"><strong>Place of Birth:</strong></td>
+                            <td style="width:50%; padding:5px;"><span t-field="doc.employee_id.place_of_birth"/></td>
+                        </tr>
+                        <tr style="border:1px solid black;">
+                            <td style="text-decoration:underline; width:30%; border-right:1px solid black; padding:5px;"><strong>CNIC NO:</strong></td>
+                            <td style="width:50%; padding:5px;"><span t-field="doc.employee_id.identification_id"/></td>
+                        </tr>
+                        <tr style="border:1px solid black;">
+                            <td style="text-decoration:underline; width:30%; border-right:1px solid black; padding:5px;"><strong>Martial Status:</strong></td>
+                            <td style="width:50%; padding:5px;"><span t-field="doc.employee_id.marital"/></td>
+                        </tr>
+                        <tr style="border:1px solid black;">
+                            <td style="width:30%; border-right:1px solid black; padding:5px;"><strong>Number of Department:</strong></td>
+                            <td style="width:50%; padding:5px;"><span t-field="doc.employee_id.number_of_department"/></td>
+                        </tr>
+                        <tr style="border:1px solid black;">
+                            <td style="text-decoration:underline; width:30%; border-right:1px solid black; padding:5px;"><strong>Present Address:</strong></td>
+                            <td style="width:50%; padding:5px;">
+                                <span t-field="doc.employee_id.address_home_id.street"/>
+                                <span t-field="doc.employee_id.address_home_id.street2"/>
+                                <span t-field="doc.employee_id.address_home_id.city"/>
+                                <span t-field="doc.employee_id.address_home_id.country_id"/>
+                                </td>
+                        </tr>
+                        <tr style="border:1px solid black;">
+                            <td style="text-decoration:underline; width:30%; border-right:1px solid black; padding:5px;"><strong>Permanent Address:</strong></td>
+                            <td style="width:50%; padding:5px;"><span t-field="doc.employee_id.permanent_address"/></td>
+                        </tr>
+                        <tr style="border:1px solid black;">
+                            <td style="text-decoration:underline; width:30%; border-right:1px solid black; padding:5px;"><strong>Mobile NO:</strong></td>
+                            <td style="width:50%; padding:5px;"><span t-field="doc.employee_id.mobile_phone"/></td>
+                        </tr>
+                        <tr style="border:1px solid black;">
+                            <td style="text-decoration:underline; width:30%; border-right:1px solid black; padding:5px;"><strong>Working Schedule:</strong></td>
+                            <td style="width:50%; padding:5px;"><span t-field="doc.resource_calendar_id"/></td>
+                        </tr>
+                        <tr style="border:1px solid black;">
+                            <td style="text-decoration:underline; width:30%; border-right:1px solid black; padding:5px;"><strong>Schedule Pay:</strong></td>
+                            <td style="width:50%; padding:5px;"><span t-field="doc.wage"/></td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <strong>CONTACT OF ANY NEAREST RELATIVE FOR EMERGENCY CONTACT.</strong>
+                    <table style="width:86.5%; margin-top:10px; border:1px solid black;">
+                        <thead>
+                            <th style="border:1px solid black; padding:5px;">Name</th>
+                            <th style="border:1px solid black; padding:5px;">Relation</th>
+                            <th style="border:1px solid black; padding:5px;">Cell NO</th>
+                            <th style="border:1px solid black; padding:5px;">Address</th>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="doc.employee_id.emergency_contact_lines" t-as="empl">
+                                <td style="border:1px solid black; padding:5px;"><span t-field="empl.name"/></td>
+                                <td style="border:1px solid black; padding:5px;"><span t-field="empl.relation"/></td>
+                                <td style="border:1px solid black; padding:5px;"><span t-field="empl.mobile_number"/></td>
+                                <td style="border:1px solid black; padding:5px;"><span t-field="empl.address"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row" style="margin-top:4em;">
+                        <div class="col-xs-5">
+                           <span><strong>Note:- </strong>I HEREBY CONFIRM THAT ALL ABOVE INFORMATION IS TRUE AND IF ANY CHAGES HAPPENS , WILL BE PROVIDED TO COMPANY. </span>
+                        </div>
+                        <div class="col-xs-6">
+                            <strong>Signature of Employee:</strong><input type="text" style="width:220px; border: 0px; border-bottom:2px solid black;"/>
+                        </div>
+                    </div>
+                    
+                </div>
+            </t>
+        </t>
+    </t>
+    </template>
+</odoo>

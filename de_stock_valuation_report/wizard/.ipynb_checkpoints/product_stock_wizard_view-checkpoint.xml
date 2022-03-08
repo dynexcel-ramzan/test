@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="stock_valuation_wizard_view" model="ir.ui.view">
+        <field name="name">stock.valuation.wizard.view</field>
+        <field name="model">product.stock.valuation.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Product Stock">
+                <group>
+                    <group>
+                        <field name="dated"/>
+                    </group>
+                    <group>
+                    </group>
+                </group>
+              <group>
+                  <group>
+                      <field name="location_id" />
+                      <!-- <field name="location_ids" widget="many2many_tags"/> -->
+                  </group>
+                  <group>
+                      <field name="product_id" />
+                      <field name="pricelist_id" />
+                  </group>
+                </group>
+                <group string="Select Categories">
+                        <label
+                            string="(If you do not select any categories it will take all categories)"
+                            colspan="4" />
+                        <field name="categ_ids"
+                            nolabel="1">
+                            <tree string="Products">
+                                <field name="name" />
+                            </tree>
+                        </field>
+                    </group>
+                <footer>
+                    <button name="print_report" type="object" string="Print" class="oe_highlight"/>
+                    <button name="action_print_xlsx_report" type="object" string="XLS" class="oe_highlight"/>
+                    <button string="Cancel" class="btn btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_valuation_wizard" model="ir.actions.act_window">
+        <field name="name">Stock Valuation</field>
+        <field name="res_model">product.stock.valuation.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_stock_valuation_salesprice_report" name="Stock Valuation(Sale Price)" parent="stock.menu_warehouse_report" action="action_stock_valuation_wizard" sequence="200" />
+</odoo>

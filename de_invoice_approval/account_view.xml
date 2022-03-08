@@ -1,0 +1,52 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<odoo>
+<!--    <data>-->
+        <record id="inherit_view_account_move_form" model="ir.ui.view">
+                <field name="name">inherit.view.account.move.form</field>
+                <field name="model">account.move</field>
+                <field name="inherit_id" ref="account.view_move_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='to_check']" position="after">
+                        <field name="submit_to_approve"/>
+                        <field name="is_approved"/>
+                        <field name="is_lock"/>
+                    </xpath>
+
+                    <xpath expr="//form[1]/header[1]/button[@name='action_post']" position="after">
+                        <button name="action_approval" class="oe_highlight" string="Submit" type="object" attrs="{'invisible': [('state', 'not in', ['draft'])]}" groups="de_invoice_approval.group_invoice_approval_user"/>
+                    </xpath>
+                    <xpath expr="//form[1]/header[1]/button[@name='action_post']" position="after">
+                        <button name="action_approved" class="oe_highlight" string="Approve" type="object" attrs="{'invisible': [('state', 'not in', ['approval'])]}" groups="de_invoice_approval.group_approved_invoice_user"/>
+                    </xpath>
+
+                    <xpath expr="//button[@name='button_cancel']" position="attributes">
+                        <attribute name="attrs">{'invisible': [('state', 'in', ('posted', 'cancel'))]}</attribute>
+                        <attribute name="groups">de_invoice_approval.group_cancel_invoice_user</attribute>
+                    </xpath>
+
+                    <xpath expr="//form[1]/header[1]/button[@name='action_post'][2]" position="attributes">
+                        <attribute name="groups">de_invoice_approval.group_confirm_invoice_user</attribute>
+                        <attribute name="attrs">{'invisible': [('state', '!=', 'approved')]}</attribute>
+                    </xpath>
+
+
+                     <xpath expr="//field[@name='invoice_line_ids']" position="attributes">
+                         <attribute name="attrs">{'readonly': [('state', 'not in', ('draft', 'approval', 'approved'))]}</attribute>
+                    </xpath>
+
+                    <xpath expr="//field[@name='line_ids']" position="attributes">
+                         <attribute name="attrs">{'readonly': [('state', 'not in', ('draft', 'approval', 'approved'))]}</attribute>
+                    </xpath>
+
+<!--                     <xpath expr="//form[1]/header[1]/button[@name='action_post']" position="attributes">
+                        <attribute name="groups">de_invoice_approval.group_confirm_invoice_user</attribute>
+                    </xpath> -->
+
+                    <xpath expr="//button[@name='button_draft']" position="attributes">
+                        <attribute name="groups">de_invoice_approval.group_reset_draft_journal_entry</attribute>
+                    </xpath>
+
+                </field>
+        </record>
+<!--    </data>-->
+</odoo>

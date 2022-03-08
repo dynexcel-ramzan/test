@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_admin_account_summary_account,access.admin.account.summary.account,model_account_summary_account,de_account_balance.group_account_admin,1,1,1,1
+access_admin_account_summary_master,access.admin.account.summary.master,model_account_summary_master,de_account_balance.group_account_admin,1,1,1,1
+access_account_summary_master,access.account.summary.master,model_account_summary_master,account.group_account_user,1,0,0,0
+access_account_summary_account,access.account.summary.account,model_account_summary_account,account.group_account_user,1,0,0,0

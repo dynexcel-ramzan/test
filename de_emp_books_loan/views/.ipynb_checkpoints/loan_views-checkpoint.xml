@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="hr_employee_loan_type_search_view" model="ir.ui.view">
+            <field name="name">hr.employee.loan.type.search.view</field>
+            <field name="model">hr.employee.loan.type</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="name" string="Type" filter_domain="['|',('name','ilike',self)]"/>
+                  
+               </search>
+            </field>
+        </record>
+
+
+        <record id="hr_employee_loan_type_form_view" model="ir.ui.view">
+            <field name="name">hr.employee.loan.type.form.view</field>
+            <field name="model">hr.employee.loan.type</field>
+            <field name="arch" type="xml">
+                <form string="Employee Loans">
+                	<sheet>
+                        <div class="oe_title">
+                            <label class="oe_edit_only" for="name" string="Type"/>
+                            <h1><field name="name" placeholder="e.g. Car Loan"/></h1>
+                            <h3><field name="code" class="oe_inline" placeholder="e.g. L01"/></h3>
+                        </div>
+                        <group name="Loan Details">
+                            <group>
+                                
+                                
+                            </group>
+                            <group string="Accounting Information">
+                                <field name="product_id" options="{'no_create':True}" />
+                                <field name="journal_id" options="{'no_create':True}" />
+                                <field name="company_id" options="{'no_create':True}" />
+                            </group>
+                        </group>
+                        <div>
+                        <notebook>
+                            <page string="Loan Policies" name="loan_policies">
+                            </page>
+                            <page string="Documents" name="loan_document">
+                            </page>
+                            </notebook>
+                        </div>
+		            </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="employee_loan_type_tree_view">
+            <field name="name">hr.loan.type.tree.view</field>
+            <field name="model">hr.employee.loan.type</field>
+            <field name="arch" type="xml">
+                <tree string=" Loan type">
+                    <field name="name"/>
+                   <field name="product_id"/>
+                </tree>
+            </field>
+        </record>
+
+        
+        <record id="action_employee_loan_type" model="ir.actions.act_window">
+            <field name="name">Loan Type</field>
+            <field name="res_model">hr.employee.loan.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="employee_loan_type_tree_view"/>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a new loan type
+              </p>
+            </field>
+        </record>  
+
+        <menuitem id="menu_emp_books_config_loan_type" action="action_employee_loan_type" parent="menu_emp_books_config_loan" name="Loan Type" sequence="1" groups="hr.group_hr_manager"/>
+        
+        <!-- Loan view -->
+        <record model="ir.ui.view" id="hr_employee_loan_tree_view">
+            <field name="name">hr.employee.loan.tree.view</field>
+            <field name="model">hr.employee.loan</field>
+            <field name="arch" type="xml">
+                <tree string=" Loan">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="ref"/>
+                   <field name="employee_id"/>
+                    <field name="loan_type_id"/>
+                    <field name="amount"/>
+                    <field name="amount_residual"/>
+                    <field name="currency_id" optional="hide"/>
+                    <field name="date_start" optional="hide"/>
+                    <field name="installments" optional="hide"/>
+                    <field name="date_end" optional="hide"/>
+                    <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                    <field name="user_id" readonly="1" options="{'no_create':True}" string="Requested By" optional="hide"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="hr_employee_loan_form_view" model="ir.ui.view">
+            <field name="name">hr.employee.loan.form.view</field>
+            <field name="model">hr.employee.loan</field>
+            <field name="arch" type="xml">
+                <form string="Loan" class="o_advance_form">
+                    <field name="can_reset" invisible="1"/>
+                    <header> 
+                        <button name="compute_loan" states="draft" string="Compute Loan" type="object" class="oe_highlight"/>
+                        <button name="action_submit_request" states="validate" string="Submit to Manager" type="object" class="oe_highlight"/>
+                        <button name="approve_request" states="submit" string="Approve" type="object" groups="de_emp_books_loan.group_hr_loan_team_approver" class="oe_highlight"/>
+                        
+                        <button name="action_create_bill"
+                            string="Post Journal Entries"
+                            type="object"
+                            class="oe_highlight o_expense_sheet_post"
+                            attrs="{'invisible': [('state', '!=', 'approved')]}"
+                            groups="account.group_account_invoice"/>
+                        
+                        
+                        
+                        <button name="reset_request" string="Reset to Draft" type="object" attrs="{'invisible': ['|', ('can_reset', '=', False), ('state', 'not in', ['cancel','submit','validate'])]}" data-hotkey="q"/>
+                        
+                        <button name="%(de_emp_books_loan.hr_employee_loan_refuse_wizard_action)d" states="submit,approve" context="{'hr_employee_loan_refuse_model':'hr.employee.loan'}" string="Refuse" type="action" groups="de_emp_books_loan.group_hr_loan_team_approver" />
+                        <button name="%(de_emp_books_loan.hr_employee_loan_refund_wizard_action)d" states="submit,approve,done" context="{'hr_employee_loan_refund_model':'hr.employee.loan'}" string="Refund" type="action" groups="de_emp_books_loan.group_hr_loan_team_approver" />
+
+                        
+                        <field name="state" widget="statusbar" statusbar_visible="draft,validate,submit,approved,post,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button type="object"
+                        name="action_view_requests"
+                        class="oe_stat_button"
+                        icon="fa-truck"
+                        attrs="{'invisible': [('deferred_request_count', '=', 0)]}" groups="de_emp_books_loan.group_hr_loan_user">
+                        <field name="deferred_request_count" widget="statinfo" string="Deferred"/>
+                    </button>
+                            
+                        </div>
+                        <widget name="web_ribbon" title="Paid" bg_color="bg-success" attrs="{'invisible': [('state', '!=', 'done')]}"/>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="e.g. Loan request for home" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="employee_id" required="1" options="{'no_create':True}" />
+                                <field name="manager_id" readonly="1" options="{'no_create':True}" />
+                                <field name="job_id" options="{'no_create':True}" />
+                                <field name="department_id" />
+                                <field name="loan_type_id" required="1" options="{'no_create':True}" />
+                                                                
+                                <label for="amount" string="Loan Amount"/>
+                                <div class="o_row no-gutters d-flex">
+                                    <div class="o_row">
+                                        <field name="amount" class="text-left" />
+                                    </div>
+                                    <field name="currency_id" required="1" options="{'no_create':True}" />                         
+                                </div>
+                                <field name="interest_rate"/>
+                                <field name="date_start"/>
+                                <field name="installments"/>
+                                <field name="date_end"/>
+                            </group>
+                            <group>
+                                
+                                <field name="date"/>
+                                <field name="ref"/>
+                                <field name="accounting_date" attrs="{'invisible': ['|', ('accounting_date', '=', False), ('state', 'not in', ['approved', 'done'])]}" />
+                                <field name="product_id" />
+                                 <field name="product_uom_id" />
+                                <field name="product_uom_category_id" invisible="1"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                                <field name="user_id" readonly="1" options="{'no_create':True}" string="Requested By"/>
+                                <field name="amount_residual" />
+                            </group>
+                        </group>
+                        <div>
+                            <field name="description" class="oe_inline" placeholder="Notes..."/>
+                        </div>
+                        <notebook>
+                            <page name="loan_schedule" string="Loan Schedule">
+                                <field name="loan_line" nolabel="1" >
+                                    <tree editable="bottom">
+                                        <field name="date" optional="hide"/>
+                                        <field name="date_end" optional="hide"/>
+                                        <field name="date_due" />
+                                        <field name="amount" string="Monthly Instalment" sum="Amount"/>
+                                        <field name="amount_principal" string="Principal" />
+                                        <field name="amount_interest" string="Interest" sum="Interest Balance"/>
+                                        <field name="amount_total" string="Total" />
+                                        <field name="amount_emi" string="EMI(Installment)" sum="EMI"/>
+                                        <field name="amount_residual" string="Residual Amount" sum="Residual"/>
+                                        
+                                        <field name="currency_id" options="{'no_create':True}" optional="hide"/>
+                                        <field name="date_disburse" />
+                                        <field name="state" />
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="accounting_info" string="Accounting" groups="account.group_account_user,account.group_account_manager">
+                                <group>
+                                    <group>
+                                        <field name="journal_id" options="{'no_create':True,'no_open':True}"/>
+                                        <field name="account_move_id" />
+                                        <field name="payment_state" invisible="1" />
+                                    </group>
+                                    <group>
+                                        <field name="address_id" string="Partner"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="o_attachment_preview"/>
+                    <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_hr_employee_loan" model="ir.actions.act_window">
+            <field name="name">Loan Request</field>
+            <field name="res_model">hr.employee.loan</field>
+            <field name="view_mode">tree,kanban,form,graph,pivot</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No loan request found. Let's create one!
+                </p><p>
+                    Employee requests for loan.  
+                </p>
+            </field>
+        </record>
+        
+        <menuitem id="menu_emp_books_loan_request" action="action_hr_employee_loan" parent="menu_emp_books_loan" name="Loan Request" sequence="1" groups="hr.group_hr_manager"/>   
+        
+        <!-- Disbursement Line -->
+        <record model="ir.ui.view" id="hr_employee_loan_disburse_tree_view">
+            <field name="name">hr.employee.loan.disburse.tree.view</field>
+            <field name="model">hr.employee.loan.disburse</field>
+            <field name="arch" type="xml">
+                <tree string=" Loan Disbuese">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="date_disburse"/>
+                    <field name="amount_due"/>
+                    <field name="amount_disburse"/>
+                    <field name="amount_residual"/>
+                    <field name="employee_loan_line_id" optional="hide"/>
+                    <field name="payslip_id" optional="hide"/>
+                    <field name="currency_id" optional="show"/>
+                    <field name="payslip_state"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_hr_employee_loan_disbursement" model="ir.actions.act_window">
+            <field name="name">Loan Disbursement</field>
+            <field name="res_model">hr.employee.loan.disburse</field>
+            <field name="view_mode">tree,kanban,form,graph,pivot</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No loan request found. Let's create one!
+                </p><p>
+                    Employee requests for loand.  
+                </p>
+            </field>
+        </record>
+        
+        <menuitem id="menu_emp_books_loan_disbursement" action="action_hr_employee_loan_disbursement" parent="menu_emp_books_loan" name="Disbursements" sequence="30" groups="hr.group_hr_manager"/>   
+        
+
+        
+    </data>
+</odoo>
