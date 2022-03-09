@@ -128,7 +128,7 @@ class HREmployeeLoan(models.Model):
                                   tracking=True, states={'draft': [('readonly', False)]}, default=_default_employee_id,
                                   check_company=True)
 
-    user_id = fields.Many2one('res.users', 'Manager', compute='_compute_from_employee_id', store=True, readonly=True,
+    user_id = fields.Many2one('res.users', 'U.Manager', compute='_compute_from_employee_id', store=True, readonly=True,
                               copy=False, states={'draft': [('readonly', False)]}, tracking=True, domain=lambda self: [
             ('groups_id', 'in', self.env.ref('de_emp_books_loan.group_hr_loan_team_approver').id)])
 
