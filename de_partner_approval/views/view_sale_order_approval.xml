@@ -1,0 +1,71 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<odoo>
+    <record id="inherit_view_sale_order_form" model="ir.ui.view">
+        <field name="name">inherit.view.sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='require_payment']" position="after">
+                <field name="submit_to_approve"/>
+                <field name="is_approve"/>
+                <field name="is_lock"/>
+            </xpath>
+
+            <xpath expr="//form[1]/header[1]/button[@name='action_confirm']" position="after">
+                <button name="action_approval" class="oe_highlight"
+                        string="Submit" type="object"  attrs="{'invisible': [('state', 'not in', ['draft'])]}"
+                        groups="de_sale_order_approval.group_sale_order_approval_user"/>
+            </xpath>
+            <xpath expr="//form[1]/header[1]/button[@name='action_confirm']" position="after">
+                <button name="action_approve" class="oe_highlight"
+                        string="Confirm" type="object"  attrs="{'invisible': [('state', 'not in', ['submit'])]}"
+                        groups="de_sale_order_approval.group_sale_order_confirm_user"/>
+            </xpath>
+
+            <xpath expr="//form[1]/header[1]/button[@name='action_cancel']" position="after">
+                <button name="action_lock" class="oe_highlight"
+                        string="Lock" type="object" attrs="{'invisible':['|', ('is_lock','=',True), ('state', 'not in', ['sale'])]}"
+                        groups="de_sale_order_approval.group_sale_order_confirm_user"/>
+            </xpath>
+
+            <xpath expr="//form[1]/header[1]/button[@name='action_lock']" position="after">
+                <button name="action_unlock" class="oe_highlight"
+                        string="Unlock" type="object" state="sale" attrs="{'invisible': ['|', ('is_lock', '=', False), ('state', 'not in', ['sale'])]}"
+                        groups="de_sale_order_approval.group_sale_order_confirm_user"/>
+            </xpath>
+
+            <xpath expr="//button[@name='action_cancel']" position="attributes">
+                <attribute name="groups">de_sale_order_approval.group_sale_order_cancel_user</attribute>
+                <attribute name="attrs">{'invisible': [('state', 'in', ['done', 'cancel'])]}</attribute>
+            </xpath>
+            <xpath expr="//form[1]/header[1]/button[@name='action_confirm'][2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//form[1]/header[1]/button[@name='409']" position="attributes">
+                <attribute name="attrs">{'invisible': [('state', 'not in', ['submit', 'sale'])]}
+                </attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('is_lock', '=', True), ('state', 'in', ('done','cancel'))]}</attribute>
+            </xpath>
+
+
+            <xpath expr="//field[@name='order_line']/tree/field[@name='qty_delivered']" position="replace">
+                <field name="qty_delivered" string="Delivered" attrs="{'readonly': [('qty_delivered_method', '!=', 'manual')], 'invisible': [('state', 'not in', ['submit', 'sale', 'done'])]}"/>
+
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/tree/field[@name='qty_invoiced']" position="replace">
+                <field name="qty_invoiced" string="Invoiced" attrs="{'readonly': [('qty_delivered_method', '!=', 'manual')], 'invisible': [('state', 'not in', ['submit', 'sale', 'done'])]}"/>
+            </xpath>
+
+            <xpath expr="//button[@name='action_draft']" position="attributes">
+                <attribute name="groups">de_sale_order_approval.group_sale_order_reset_quotation_user</attribute>
+            </xpath>
+
+        </field>
+    </record>
+<!--    </data>-->
+</odoo>
