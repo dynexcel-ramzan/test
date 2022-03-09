@@ -5,9 +5,10 @@ access_hr_loan_type_user,access.hr.loan.type.user,model_hr_employee_loan_type,hr
 
 access_hr_employee_loan_user,access.hr.employee.loan.user,model_hr_employee_loan,hr.group_hr_user,1,1,1,1
 access_hr_employee_loan_line_user,access.hr.employee.loan.line.user,model_hr_employee_loan_line,hr.group_hr_user,1,1,1,1
+access_hr_employee_loan_rule,access.hr.employee.loan.rule,model_hr_employee_loan_rule,hr.group_hr_user,1,1,1,1
 
 access_hr_employee_loan_disburse_user,access.hr.employee.loan.disburse.user,model_hr_employee_loan_disburse,hr.group_hr_user,1,1,1,1
 
 access_hr_employee_loan_deferred_user,access.hr.employee.loan.deferred.user,model_hr_employee_loan_deferred,hr.group_hr_user,1,1,1,1
-
+access_hr_employee_loan_refuse_wizard,access.hr.employee.loan.refuse.wizard,model_hr_employee_loan_refuse_wizard,hr.group_hr_user,1,1,1,1
 access_hr_employee_loan_refund_wizard,access.hr.employee.loan.refund.wizard,model_hr_employee_loan_refund_wizard,de_emp_books_loan.group_hr_loan_team_approver,1,1,1,0
