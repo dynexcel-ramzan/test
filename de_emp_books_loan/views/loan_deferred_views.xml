@@ -30,9 +30,9 @@
                 <form string="Loan" class="o_advance_form">
                     <header> 
                         <button name="action_submit_request" states="validate" string="Submit to Manager" type="object" class="oe_highlight"/>
-                        <button name="approve_request" states="submit" string="Approve" type="object" groups="de_emp_books_loan.group_hr_loan_team_approver" class="oe_highlight"/>
+                        <button name="approve_request" states="submit" string="Approve" type="object" class="oe_highlight"/>
                                                 
-                        <button name="%(de_emp_books_loan.hr_employee_loan_refuse_wizard_action)d" states="submit,approve" context="{'hr_employee_loan_refuse_model':'hr.employee.loan'}" string="Refuse" type="action" groups="de_emp_books.group_hr_loan_team_approver" />
+                        <button name="%(de_emp_books_loan.hr_employee_loan_refuse_wizard_action)d" states="submit,approve" context="{'hr_employee_loan_refuse_model':'hr.employee.loan'}" string="Refuse" type="action"/>
 
                         
                         <field name="state" widget="statusbar" statusbar_visible="draft,submit,done"/>
