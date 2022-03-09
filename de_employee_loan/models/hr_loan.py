@@ -60,7 +60,7 @@ class HrLoan(models.Model):
         ('approve', 'Approved'),
         ('refuse', 'Refused'),
         ('cancel', 'Canceled'),
-    ], string="State", default='draft', tracking='onchange', copy=False, )
+    ], string="State", default='draft', track_visibility='onchange', copy=False, )
     
     
      
