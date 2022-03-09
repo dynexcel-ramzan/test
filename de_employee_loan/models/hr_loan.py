@@ -315,7 +315,7 @@ class HrEmployee(models.Model):
         """This compute the loan amount and total loans count of an employee.
             """
         for record in self:
-            self.loan_count = self.env['hr.loan'].search_count([('employee_id', '=', record.id)])
+            record.loan_count = self.env['hr.loan'].search_count([('employee_id', '=', record.id)])
 
     loan_count = fields.Integer(string="Loan Count", compute='_compute_employee_loans')
     
