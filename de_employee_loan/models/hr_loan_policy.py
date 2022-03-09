@@ -42,14 +42,14 @@ class HrLoanPolicy(models.Model):
         ('part_time', 'Part Time'),
         ('project_based', 'Project Based Hiring'),
         ('outsource', 'Outsource'),
-        ], string='Employee Type', index=True, copy=False, default='permanent', track_visibility='onchange')
+        ], string='Employee Type', index=True, copy=False, default='permanent', tracking=True)
     
     grade_type_id = fields.Many2one('grade.type', string='Grade Type')
     
     gap_type = fields.Selection([
                              ('year', 'Year'),
                             ],  default = 'year', string="By")
-    gap_value = fields.Integer(string="Value")
+    gap_value = fields.Integer(string="G.Value")
     
     
     
