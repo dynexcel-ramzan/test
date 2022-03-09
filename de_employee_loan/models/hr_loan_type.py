@@ -51,7 +51,7 @@ class HrLoanType(models.Model):
         ('outsource', 'Outsource'),
         ], string='Employee Type', index=True, copy=False, default='permanent', tracking=True)
     
-    grade_type_id = fields.Many2one('grade.type', string='Grade Type')
+    # grade_type_id = fields.Many2one('grade.type', string='Grade Type')
 
     employee_category_ids = fields.Many2many('hr.employee.category', string="Employee Category")
 

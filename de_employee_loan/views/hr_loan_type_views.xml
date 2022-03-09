@@ -12,7 +12,7 @@
                 <field name="code"/>
                 <field name="payment_method"/>
                 <field name="employee_type" />
-                <field name="grade_type_id"/>
+<!--                <field name="grade_type_id"/>-->
 
             </tree>
         </field>
@@ -43,7 +43,7 @@
                         <group>    
                            <field name="payment_method"/>
                            <field name="compansation"/>
-                           <field name="grade_type_id"/>
+<!--                           <field name="grade_type_id"/>-->
                         </group>
                         
                     </group>
