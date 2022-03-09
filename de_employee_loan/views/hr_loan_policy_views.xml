@@ -45,7 +45,7 @@
                         <group>    
                            <field name="company_id"/>
                            <field name="employee_type"/>
-                           <field name="grade_type_id"/>
+<!--                           <field name="grade_type_id"/>-->
                         </group>
                          
                     </group>
