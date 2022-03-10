@@ -16,7 +16,7 @@ class EmployeeAdvanceType(models.Model):
 
     name = fields.Char(string='Name', required=True, translate=True)
     sequence = fields.Integer(default=1)
-    product_id = fields.Many2one('product.product', string='Product', readonly=False, required=True, tracking=True, domain="[('type', '=', 'service')]", ondelete='restrict')
+    product_id = fields.Many2one('product.product', string='Product', readonly=False, required=True, domain="[('type', '=', 'service')]", ondelete='restrict')
     
 class EmployeeAdvance(models.Model):
 
