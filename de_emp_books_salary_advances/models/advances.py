@@ -108,7 +108,7 @@ class EmployeeAdvance(models.Model):
     
     journal_id = fields.Many2one('account.journal', string='Journal', domain="[('type','=','purchase')]", default=_default_journal_id, readonly=False, states={'done': [('readonly', True)], 'close': [('readonly', True)], 'cancel': [('readonly', True)]})
     account_move_id = fields.Many2one('account.move', string='Journal Entry', ondelete='restrict', copy=False, readonly=True)
-    # payment_state = fields.Selection('Payment State', related='account_move_id.payment_state')
+    payment_state = fields.Selection('Payment State', related='account_move_id.payment_state')
     can_reset = fields.Boolean('Can Reset', compute='_compute_can_reset')
 
     amount_ded = fields.Monetary("Deduction", currency_field='currency_id', readonly=True, copy=False, compute='_compute_advance_balance' )
