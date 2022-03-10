@@ -71,7 +71,7 @@ class EmployeeAdvance(models.Model):
     
     employee_id = fields.Many2one('hr.employee', compute='_compute_employee_id', string="Employee", store=True, required=True, readonly=True, tracking=True, states={'draft': [('readonly', False)]}, default=_default_employee_id, domain=lambda self: self._get_employee_id_domain(), check_company=True)
     
-    user_id = fields.Many2one('res.users', 'Manager', compute='_compute_from_employee_id', store=True, readonly=True, copy=False, states={'draft': [('readonly', False)]}, tracking=True, domain=lambda self: [('groups_id', 'in', self.env.ref('de_emp_books_salary_advances.group_hr_advance_user').id)])
+    user_id = fields.Many2one('res.users', 'E.Manager', compute='_compute_from_employee_id', store=True, readonly=True, copy=False, states={'draft': [('readonly', False)]}, tracking=True, domain=lambda self: [('groups_id', 'in', self.env.ref('de_emp_books_salary_advances.group_hr_advance_user').id)])
 
     manager_id = fields.Many2one('hr.employee', string='Manager', related='employee_id.parent_id')
     department_id = fields.Many2one('hr.department', compute='_compute_from_employee_id', store=True, readonly=True, copy=False, string='Department', states={'draft': [('readonly', False)], 'submit': [('readonly', False)]})
@@ -108,7 +108,7 @@ class EmployeeAdvance(models.Model):
     
     journal_id = fields.Many2one('account.journal', string='Journal', domain="[('type','=','purchase')]", default=_default_journal_id, readonly=False, states={'done': [('readonly', True)], 'close': [('readonly', True)], 'cancel': [('readonly', True)]})
     account_move_id = fields.Many2one('account.move', string='Journal Entry', ondelete='restrict', copy=False, readonly=True)
-    payment_state = fields.Selection('Payment State', related='account_move_id.payment_state')
+    # payment_state = fields.Selection('Payment State', related='account_move_id.payment_state')
     can_reset = fields.Boolean('Can Reset', compute='_compute_can_reset')
 
     amount_ded = fields.Monetary("Deduction", currency_field='currency_id', readonly=True, copy=False, compute='_compute_advance_balance' )

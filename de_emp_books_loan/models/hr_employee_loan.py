@@ -195,7 +195,7 @@ class HREmployeeLoan(models.Model):
                                          'cancel': [('readonly', True)]})
     account_move_id = fields.Many2one('account.move', string='Journal Entry', ondelete='restrict', copy=False,
                                       readonly=True)
-    payment_state = fields.Selection('Payment State', related='account_move_id.payment_state')
+    # payment_state = fields.Selection('Payment State', related='account_move_id.payment_state')
     can_reset = fields.Boolean('Can Reset', compute='_compute_can_reset')
 
     loan_line = fields.One2many('hr.employee.loan.line', 'employee_loan_id', string='Loan Schedule', copy=False,
