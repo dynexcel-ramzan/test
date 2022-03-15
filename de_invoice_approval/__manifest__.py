@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Invoice Approval',
+    'name': 'Invoice Approvals',
     'version': '14.0.1',
     'category': 'Accounting',
     'description': """
