@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!--	<record id="report_account_journal_entry" model="ir.actions.report">-->
+<!--        <field name="name">Journal Entry</field>-->
+<!--        <field name="model">account.move</field>-->
+<!--        <field name="report_type">qweb-pdf</field>-->
+<!--        <field name="report_name">tis_journal_entry_print.report_journal_entry_document</field>-->
+<!--    </record>-->
+	<report
+    	id="report_account_journal_entry"
+        string="Journal Entry"
+        model="account.move"
+        report_type="qweb-pdf"
+        file="tis_journal_entry_print.report_journal_entry_document"
+        name="tis_journal_entry_print.report_journal_entry_document"
+	/>
+	
+	<template id="report_journal_entry_document">
+		<t t-call="web.html_container">
+			<t t-foreach="docs" t-as="doc">
+				<t t-call="web.external_layout">
+					<div class="page">
+						<div class="raw">
+						  <t t-set="je_id" t-value="[]"/>
+						  <t t-set="jid" t-value="0"/>
+							<br><h2 class="text-center">Journal Entry</h2></br>
+							<br>
+							<div class="col-xs-6">
+							  <t t-if="doc.state == 'draft'">
+							    <strong>NO:</strong>
+								  <span>Draft</span>
+							  </t>
+							  <t t-if="doc.state == 'posted'">
+							    <strong>NO:</strong>
+							    <span t-field="doc.name"/>
+							  </t>
+							  <br></br>
+								<t t-if="doc.state == 'draft'">
+								  <strong>ID:</strong>
+								  <!--Remove ',' from string-->
+								  <t t-set="je_id" t-value="str(doc.id).split(',')"/>
+								  <t t-foreach="je_id" t-as="j_id">
+								    <t t-set="jid" t-value="j_id"/>
+								    <t t-esc="jid"/>
+								  </t>
+								  <!--End Remove ',' from string-->
+								</t>
+							</div>
+							<div class="col-xs-6">
+								<strong>Date:</strong>
+								<span t-field="doc.date"/>
+							</div>
+							<div class="col-xs-6">
+								<strong>Journal:</strong>
+								<span t-field="doc.journal_id"/>
+							</div>
+							<div t-if="doc.ref" class="col-xs-6">
+								<strong>Reference:</strong>
+								<span t-field="doc.ref"/>
+							</div>
+							</br>
+							<table class="table table-condensed" style=" margin-top:80px;">
+								<thead>
+									<tr>
+										<th>Account</th>
+										<th>Partner</th>
+										<th>Label</th>
+										<th>Analytic Account</th>
+										<th>Debit</th>
+										<th>Credit</th>
+									</tr>
+								</thead>
+								<tbody class="sale_tbody">
+									<t t-foreach="doc.line_ids" t-as="lines">
+										<tr>
+											<td><span t-field="lines.account_id"/></td>
+											<td><span t-field="lines.partner_id"/></td>
+											<td><span t-field="lines.name"/></td>
+											<td><span t-field="lines.analytic_account_id"/></td>
+											<td><span t-field="lines.debit"/></td>
+											<td><span t-field="lines.credit"/></td>
+										</tr>
+									</t>
+								</tbody>
+							</table>
+							<h4 style="text-decoration: underline;">Notes:</h4>
+							<p t-field="doc.narration"/>
+							<br/><br/><br/>
+							<div clas="row">
+							  <div style="float:left;">
+							    <t t-foreach="request.env['mail.message'].sudo().search([('res_id','=', doc.id), ('model','=', 'account.move')])" t-as="je_id">
+							      <t t-foreach="je_id.tracking_value_ids" t-as="je_id_state">
+							        <t t-if="not je_id_state">
+							          <b style="text-decoration: underline; text-decoration-style: solid; text-decoration-thickness: 3px;"><t t-esc="je_id_state.author_id.name"/></b>
+							        </t>
+							      </t>
+							    </t>
+							    <b>
+							      <span t-field="doc.create_uid.name" style="text-decoration: underline; text-decoration-style: solid; text-decoration-thickness: 3px;"/>
+							    </b>
+							    <br/>
+							    <div class="text-center" style="font-size: 11pt;font-family:Helvetica,Verdana,Arial,sans,Lucida Grande,Calibri;">
+							      <strong>Prepared By:</strong>
+							    </div>
+							  </div>
+							  <div style="float:left; margin-left: 20em;">
+							    <t t-foreach="request.env['mail.message'].sudo().search([('res_id','=', doc.id), ('model','=', 'account.move')])" t-as="je">
+							      <t t-foreach="je.tracking_value_ids" t-as="je_state">
+							        <t t-if="je_state.new_value_char == 'Approved'">
+							          <b style="text-decoration: underline; text-decoration-style: solid; text-decoration-thickness: 3px;"><t t-esc="je.author_id.name"/></b>
+							        </t>
+							      </t>
+							    </t>
+							    <br/>
+							    <div class="text-center" style="font-size: 11pt;font-family:Helvetica,Verdana,Arial,sans,Lucida Grande,Calibri;">
+							      <strong>Approved By:</strong>
+							    </div>
+							  </div>
+							</div>
+							<!--<table>-->
+							<!--   <tr>-->
+							<!--     <t t-foreach="request.env['mail.message'].sudo().search([('res_id','=', doc.id), ('model','=', 'account.move')])" t-as="je">-->
+							<!--       <t t-foreach="je.tracking_value_ids" t-as="je_state">-->
+							<!--         <td colspan="3">-->
+							<!--           <t t-if="doc.create_uid" t-esc="doc.create_uid.name" style="text-decoration: underline; text-decoration-style: solid; text-decoration-thickness: 3px;"/></td>-->
+							<!--         <t t-if="je_state.new_value_char == 'Approved'">-->
+							<!--           <td ><t t-esc="je.author_id.name" style="text-decoration: underline; text-decoration-style: solid; text-decoration-thickness: 3px;"/></td>-->
+							<!--         </t>-->
+							<!--       </t>-->
+							<!--     </t>-->
+
+							<!--    <td style="width:500px;"/>-->
+							<!--    <td>_________________</td>-->
+							<!--  </tr>-->
+							<!--  <tr>-->
+							<!--    <td align="center">Created By</td>-->
+							<!--    <td/>-->
+							<!--    <td align="center">Approved By</td>-->
+							<!--  </tr>-->
+
+							<!--</table>-->
+						</div>
+					</div>
+				</t>
+			</t>
+		</t>
+	</template>
+</odoo>

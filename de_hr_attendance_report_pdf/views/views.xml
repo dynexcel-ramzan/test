@@ -1,0 +1,16 @@
+<odoo>
+  <data>
+    <!-- Show Department in List view  -->
+    <record id="inherit_attendance_tree_view" model="ir.ui.view">
+            <field name="name">inherit.attendance.tree.view</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+            <field name="arch" type="xml">
+                <field name="employee_id" position="after">
+                    <field name="department_id" />
+                </field>
+
+            </field>
+        </record>
+  </data>
+</odoo>

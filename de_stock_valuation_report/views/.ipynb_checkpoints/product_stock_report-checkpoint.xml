@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    
+    <report id="stock_valuation_pdf"
+            string="Stock Valuation"
+            model="product.stock.valuation.wizard"
+            report_type="qweb-pdf"
+            file="de_stock_valuation_report.de_stock_valuation_pdf_report"
+            name="de_stock_valuation_report.de_stock_valuation_pdf_report" />
+    
+    <report id="stock_valuation_xlsx"
+            string="Stock Valuation XLSX"
+            model="product.stock.valuation.wizard"
+            report_type="xlsx"
+            file="Stock Valuation XLSX"
+            name="de_stock_valuation_report.de_stock_valuation_xlsx_report"
+            />
+    
+</odoo>
